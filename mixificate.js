@@ -55,6 +55,7 @@ const mixificate = behavior => {
       }
 
       ready() {
+        // listeners
         if (super.__behavior.listeners) {
           let events = Object.keys(super.__behavior.listeners);
 
@@ -66,6 +67,7 @@ const mixificate = behavior => {
           }
         }
 
+        // host attributes
         if (super.__behavior.hostAttributes) {
           let attributes = Object.keys(super.__behavior.hostAttributes);
 
@@ -82,11 +84,13 @@ const mixificate = behavior => {
       }
     }
 
+    // config JSON
     let configuration = {};
     configuration.properties = behavior.properties;
     configuration.observers = behavior.observers;
     MixedClass.config = configuration;
 
+    // is
     MixedClass.is = behavior.is;
 
     return MixedClass;
