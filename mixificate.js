@@ -55,18 +55,6 @@ const mixificate = behavior => {
       }
 
       ready() {
-        // listeners
-        if (super.__behavior.listeners) {
-          let events = Object.keys(super.__behavior.listeners);
-
-          for (let eventIndex in events) {
-            let event = events[eventIndex];
-            let listener = super.__behavior.listeners[event];
-
-            this.addEventListener(event, this[listener]);
-          }
-        }
-
         // host attributes
         if (super.__behavior.hostAttributes) {
           let attributes = Object.keys(super.__behavior.hostAttributes);
@@ -79,8 +67,21 @@ const mixificate = behavior => {
           }
         }
 
+        super.ready();
+
+        // listeners
+        if (super.__behavior.listeners) {
+          let events = Object.keys(super.__behavior.listeners);
+
+          for (let eventIndex in events) {
+            let event = events[eventIndex];
+            let listener = super.__behavior.listeners[event];
+
+            this.addEventListener(event, this[listener]);
+          }
+        }
+
         super.__behavior.ready.call(this);
-        superClass.prototype.ready();
       }
     }
 
