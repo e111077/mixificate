@@ -81,7 +81,9 @@ const mixificate = behavior => {
           }
         }
 
-        super.__behavior.ready.call(this);
+        if (super.__behavior.ready) {
+          super.__behavior.ready.call(this);
+        }
       }
     }
 
