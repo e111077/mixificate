@@ -1,0 +1,195 @@
+<script>
+  DefaultBehavior = {
+    properties: {
+      defaultOverride: {
+        type: Boolean,
+        value: false
+      },
+
+      defaultInBehavior: {
+        type: Boolean,
+        value: true
+      },
+
+      behaviorInBehaviorOverrideParentSiblingBehavior: {
+        type: Boolean,
+        value: true
+      },
+
+      overrideSiblingBehavior: {
+        type: Boolean,
+        value: true
+      },
+
+      defaultObserved: {
+        type: Boolean
+      }
+    },
+
+    observers: [
+      'defaultObserver(defaultObserved)',
+      'siblingObserver(siblingObserved)'
+    ],
+
+    hostAttributes: {
+      defaultHostAttribute: true,
+      defaultHostAttributeOverride: false
+    },
+
+    defaultObserver: function() {
+      if (this.defaultObserved !== undefined) {
+        this.defaultObserved = true;
+      }
+    },
+
+    OBJECT_PROPERTY: true
+  }
+
+  BIB2 = {
+    properties: {
+      bIB2: {
+        type: Boolean,
+        value: true
+      },
+
+      bIB2OverrideSibling: {
+        type: Boolean,
+        value: false
+      }
+    }
+  }
+
+  BIB3 = {
+    properties: {
+      bIB3: {
+        type: Boolean,
+        value: true
+      },
+
+      bIB2OverrideSibling: {
+        type: Boolean,
+        value: true
+      }
+    }
+  }
+
+  BehaviorInBehavior = {
+    behaviors: [BIB2,BIB3],
+
+    properties: {
+      behaviorInBehavior: {
+        type: Boolean,
+        value: true
+      },
+
+      behaviorInBehaviorOverrideParent: {
+        type: Boolean,
+        value: false
+      },
+
+      behaviorInBehaviorOverrideParentSiblingBehavior: {
+        type: Boolean,
+        value: false
+      },
+
+      behaviorInBehaviorOverrideElement: {
+        type: Boolean,
+        value: false
+      }
+    }
+  }
+
+  BehaviorWithBehavior = {
+    behaviors: [BehaviorInBehavior],
+
+    properties: {
+      behaviorInBehaviorOverrideParent: {
+        type: Boolean,
+        value: true
+      },
+
+      overrideSiblingBehavior: {
+        type: Boolean,
+        value: false
+      },
+
+      siblingObserved: {
+        type: Boolean
+      },
+
+      observedInSibling: {
+        type: Boolean
+      }
+    },
+
+    observers: ['observerInSibling(observedInSibling)'],
+
+    hostAttributes: {
+      defaultHostAttribute: false,
+      behaviorInBehaviorHostAttribute: true
+    },
+
+    defaultObserver: function() {
+      if (this.defaultObserved !== undefined) {
+        this.defaultObserved = false;
+      }
+    },
+
+    siblingObserver: function() {
+      if (this.siblingObserved !== undefined) {
+        this.siblingObserved = true;
+      }
+    },
+
+    observerInSibling: function() {
+      if (this.observedInSibling !== undefined) {
+        this.observedInSibling = true;
+      }
+    },
+
+    OBJECT_PROPERTY: false
+  }
+</script>
+
+<dom-module id="default-element">
+  <script>
+    let DefaultMixin = mixificate(DefaultBehavior);
+    let BwBMixin = mixificate(BehaviorWithBehavior)
+
+    class DefaultElement extends DefaultMixin(BwBMixin(Polymer.Element)) {
+      static get is() { return 'default-element' }
+
+      static get config() {
+        let configuration = {
+          properties: {
+            default: {
+              type: Boolean,
+              value: true
+            },
+
+            defaultOverride: {
+              type: Boolean,
+              value: true
+            },
+
+            behaviorInBehaviorOverrideElement: {
+              type: Boolean,
+              value: true
+            }
+          }
+        }
+        
+        return configuration;
+      }
+
+      ready() {
+        this._ensureAttribute('defaultHostAttributeOverride', true);
+
+        super.ready();
+      }
+    }
+
+
+    customElements.define(DefaultElement.is, DefaultElement);
+  </script>
+</dom-module>

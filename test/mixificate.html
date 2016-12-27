@@ -11,11 +11,70 @@
     <link rel="import" href="../../polymer/polymer.html">
     <link rel="import" href="../mixificate.html">
 
+    <link rel="import" href="default-element.html">
+
   </head>
   <body>
+
+    <test-fixture id="DefaultElement">
+      <template>
+        <default-element></default-element>
+      </template>
+    </test-fixture>
+
     <script>
       suite('mixificate', function() {
-        test('', function() {
+        let element;
+
+        setup(() => {
+          element = fixture('DefaultElement');
+        });
+
+        test('default property values', () => {
+          assert.isTrue(element.default);
+          assert.isTrue(element.defaultOverride);
+          assert.isTrue(element.defaultInBehavior);
+          assert.isTrue(element.overrideSiblingBehavior);
+
+          assert.isTrue(element.behaviorInBehavior);
+          assert.isTrue(element.behaviorInBehaviorOverrideParent);
+          assert.isTrue(element.behaviorInBehaviorOverrideParentSiblingBehavior);
+          assert.isTrue(element.behaviorInBehaviorOverrideElement);
+
+          assert.isTrue(element.bIB2);
+          assert.isTrue(element.bIB3);
+          assert.isTrue(element.bIB2OverrideSibling);
+
+          assert.isTrue(element.OBJECT_PROPERTY);
+        });
+
+        test('observers', () => {
+          let defaultSpy = sinon.spy(element, 'defaultObserver');
+          expect(defaultSpy.callCount).to.equal(0);
+
+          element.defaultObserved = false;
+          expect(defaultSpy.callCount).to.equal(2);
+          assert.isTrue(element.defaultObserved);
+
+          let siblingSpy = sinon.spy(element, 'siblingObserver');
+          expect(siblingSpy.callCount).to.equal(0);
+
+          element.siblingObserved = false;
+          expect(siblingSpy.callCount).to.equal(2);
+          assert.isTrue(element.siblingObserved);
+
+          let siblingObserverSpy = sinon.spy(element, 'observerInSibling');
+          expect(siblingObserverSpy.callCount).to.equal(0);
+
+          element.observedInSibling = false;
+          expect(siblingObserverSpy.callCount).to.equal(2);
+          assert.isTrue(element.observedInSibling);
+        });
+
+        test('hostAttributes', () => {
+          expect(element.getAttribute('defaultHostAttribute')).equals('');
+          expect(element.getAttribute('defaultHostAttributeOverride')).equals('');
+          expect(element.getAttribute('behaviorInBehaviorHostAttribute')).equals('');
         });
       });
     </script>
