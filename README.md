@@ -3,7 +3,7 @@
 ES6 Polymer Mixin.
 
 ## Usage
-1. Import Mixificate via HTML Import or `script.src`
+1) Import Mixificate via HTML Import or `script.src`
 
 HTML Import:
 ```html
@@ -14,12 +14,12 @@ srcipt.src:
 <script src="../mixificate/mixificate.js"></script>
 ```
 
-2. Call `mixificate` on a Polymer behavior.
+2) Call `mixificate` on a Polymer behavior.
 ```javascript
 let IronResizableMixin = mixificate(Polymer.IronResizableBehavior);
 ```
 
-3. Use the mixin in a Polymer element.
+3) Use the mixin in a Polymer element.
 
 ```javascript
 let IronResizableMixin = mixificate(Polymer.IronResizableBehavior);
