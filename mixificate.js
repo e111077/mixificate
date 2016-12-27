@@ -6,7 +6,8 @@ const mixificate = behavior => {
       created: 1,
       attached: 1,
       ready: 1,
-      listeners: 1
+      listeners: 1,
+      behaviors: 1
   };
 
   return superClass => {
@@ -35,7 +36,13 @@ const mixificate = behavior => {
           let key = keys[keyIndex];
 
           if (!(key in KEYS_TO_IGNORE)) {
-            this[key] = super.__behavior[key].bind(this);
+            if (super.__behavior[key].bind) {
+              // functions
+              this[key] = super.__behavior[key].bind(this);
+            } else {
+              // non-functions
+              this[key] = super.__behavior[key];
+            }
           }
         }
 
